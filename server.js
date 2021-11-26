@@ -7,10 +7,6 @@ const cityRoutes = require("./routes/cityRoutes");
 const nearMeRoutes = require("./routes/nearmeRoutes");
 const roadRoutes = require("./routes/roadRoutes");
 
-// TrafficView API Config
-const apikey = "3223fbc2692048f383d8b28d45445b43";
-const baseurl = `http://api.trafficview.org/event/?api-key=${apikey}&format=rf-json&system-all=true`;
-
 // middlewares
 app.use(express.json());
 
