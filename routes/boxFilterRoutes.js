@@ -1,15 +1,23 @@
 const express = require("express");
-const router = express.Router();
 const request = require("request-promise");
+const router = express.Router();
 const { baseurl } = require("../data").api_docs;
 
 router.get("/", async (req, res) => {
-  let { lat, lon, radius, responseLimit } = req.query;
-  radius = radius || 500;
-  let reqURI = `${baseurl}&radius=${radius}&radius-lat=${lat}&radius-lon=${lon}`;
+  const { width, height, boxLat, boxLon, responseLimit } = req.query;
+  let reqURI = `${baseurl}&width=${width}&height=${height}&box-lat=${boxLat}&box-lon=${boxLon}`;
 
-  if (responseLimit) reqURI = reqURI + `&response-limit=${responseLimit}`;
+  // Validate response Limit
+  if (responseLimit) {
+    reqURI = reqURI + `&response-limit=${responseLimit}`;
+  } else {
+    res.json({
+      message:
+        "Response overloaded (can be), please pass responseLimit as a query.",
+    });
+  }
 
+  //   Request API
   try {
     const response = await request(reqURI);
     res.json(JSON.parse(response));
@@ -25,4 +33,3 @@ router.get("/", async (req, res) => {
 });
 
 module.exports = router;
-// 35.48539859440438, -97.50014374807625
